@@ -1,0 +1,132 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const recent = posts.slice(0, 8);
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="intro">
+				<h1>你好，我是 Hannah</h1>
+				<p>
+					这里是我个人的写作空间，记录想法、感悟，以及一些我觉得值得留下的思考。
+					不追求完整或正确，只希望能持续地写下去。
+				</p>
+			</section>
+
+			<section class="posts">
+				<h2>最近的文章</h2>
+				{recent.length === 0 && <p class="empty">还没有文章，第一篇正在路上。</p>}
+				<ul>
+					{
+						recent.map((post) => (
+							<li>
+								<a href={`/blog/${post.id}/`}>
+									<span class="title">{post.data.title}</span>
+									<span class="date">
+										<FormattedDate date={post.data.pubDate} />
+									</span>
+								</a>
+								{post.data.description && (
+									<p class="excerpt">{post.data.description}</p>
+								)}
+							</li>
+						))
+					}
+				</ul>
+				{
+					posts.length > recent.length && (
+						<p class="more">
+							<a href="/blog">查看全部文章 →</a>
+						</p>
+					)
+				}
+			</section>
+		</main>
+		<Footer />
+		<style>
+			.intro {
+				padding: 1em 0 2em 0;
+				border-bottom: 1px solid rgb(var(--gray-light));
+				margin-bottom: 2em;
+			}
+			.intro h1 {
+				font-size: 2em;
+				margin-bottom: 0.5em;
+			}
+			.intro p {
+				color: rgb(var(--gray));
+				font-size: 1.05em;
+			}
+			.posts h2 {
+				font-size: 1.3em;
+				margin-bottom: 1.2em;
+			}
+			.posts ul {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+			}
+			.posts li {
+				margin-bottom: 1.8em;
+			}
+			.posts li a {
+				display: flex;
+				justify-content: space-between;
+				align-items: baseline;
+				gap: 1em;
+				text-decoration: none;
+				color: rgb(var(--black));
+			}
+			.posts .title {
+				font-weight: 600;
+				font-size: 1.05em;
+			}
+			.posts li a:hover .title {
+				color: var(--accent);
+			}
+			.posts .date {
+				color: rgb(var(--gray));
+				font-size: 0.85em;
+				white-space: nowrap;
+				font-variant-numeric: tabular-nums;
+			}
+			.posts .excerpt {
+				color: rgb(var(--gray));
+				margin-top: 0.4em;
+				font-size: 0.95em;
+			}
+			.empty {
+				color: rgb(var(--gray));
+				font-style: italic;
+			}
+			.more {
+				margin-top: 2em;
+			}
+			.more a {
+				text-decoration: none;
+				color: var(--accent);
+			}
+			@media (max-width: 480px) {
+				.posts li a {
+					flex-direction: column;
+					gap: 0.2em;
+				}
+			}
+		</style>
+	</body>
+</html>

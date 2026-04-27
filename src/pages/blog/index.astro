@@ -1,0 +1,114 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import Header from '../../components/Header.astro';
+import { SITE_TITLE } from '../../consts';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+// Group posts by year for archive-style listing
+const postsByYear = new Map<number, typeof posts>();
+for (const post of posts) {
+	const year = post.data.pubDate.getFullYear();
+	if (!postsByYear.has(year)) postsByYear.set(year, []);
+	postsByYear.get(year)!.push(post);
+}
+const years = [...postsByYear.keys()].sort((a, b) => b - a);
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<BaseHead title={`全部文章 | ${SITE_TITLE}`} description="所有发布过的文章。" />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1>全部文章</h1>
+			<p class="count">共 {posts.length} 篇</p>
+
+			{
+				years.map((year) => (
+					<section class="year-section">
+						<h2>{year}</h2>
+						<ul>
+							{postsByYear.get(year)!.map((post) => (
+								<li>
+									<a href={`/blog/${post.id}/`}>
+										<span class="date">
+											<FormattedDate date={post.data.pubDate} />
+										</span>
+										<span class="title">{post.data.title}</span>
+									</a>
+								</li>
+							))}
+						</ul>
+					</section>
+				))
+			}
+		</main>
+		<Footer />
+		<style>
+			h1 {
+				margin-bottom: 0.25em;
+			}
+			.count {
+				color: rgb(var(--gray));
+				margin-bottom: 2em;
+				font-size: 0.95em;
+			}
+			.year-section {
+				margin-bottom: 2.5em;
+			}
+			.year-section h2 {
+				font-size: 1.1em;
+				color: rgb(var(--gray));
+				border-bottom: 1px solid rgb(var(--gray-light));
+				padding-bottom: 0.4em;
+				margin-bottom: 1em;
+				font-variant-numeric: tabular-nums;
+			}
+			ul {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+			}
+			li {
+				margin-bottom: 0.6em;
+			}
+			li a {
+				display: flex;
+				gap: 1.2em;
+				text-decoration: none;
+				color: rgb(var(--black));
+				align-items: baseline;
+			}
+			li a:hover .title {
+				color: var(--accent);
+			}
+			.date {
+				color: rgb(var(--gray));
+				font-size: 0.85em;
+				min-width: 7em;
+				white-space: nowrap;
+				font-variant-numeric: tabular-nums;
+			}
+			.title {
+				flex: 1;
+			}
+			@media (max-width: 480px) {
+				li a {
+					flex-direction: column;
+					gap: 0.1em;
+				}
+				.date {
+					min-width: 0;
+				}
+			}
+		</style>
+	</body>
+</html>

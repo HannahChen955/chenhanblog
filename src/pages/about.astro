@@ -1,0 +1,66 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<BaseHead title={`关于 | ${SITE_TITLE}`} description="关于这个博客和我自己。" />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<article class="prose">
+				<h1>关于</h1>
+
+				<p>
+					我是 Hannah。这是我的个人写作空间。
+				</p>
+
+				<p>
+					我没有把它放在公众号或别的平台，是因为我希望有一个属于自己的、统一的入口——
+					不需要每写完一篇就到处复制粘贴，也不被任何平台的规则牵着走。
+				</p>
+
+				<p>
+					这里大多是一些感悟、想法，或者我觉得值得留下的思考片段。
+					不一定有体系，也不一定要写得完整。我更在意的是能不能<strong>持续地</strong>记录下去。
+				</p>
+
+				<h2>为什么要写</h2>
+				<p>
+					写作对我来说，更多是一种向内的整理。
+					那些零散的、容易被生活冲走的想法，写下来才会变得真实，
+					才有机会回头去看它们是不是发生了变化。
+				</p>
+
+				<h2>关于内容</h2>
+				<p>
+					现阶段我没有去想盈利的事情，对我来说，<strong>内容本身和坚持</strong>才是最重要的。
+					所以你在这里看到的，会是相对慢、相对私人、但希望是真诚的东西。
+				</p>
+
+				<h2>联系</h2>
+				<p>
+					如果你想聊点什么，可以通过下面这些方式找到我：
+				</p>
+				<ul>
+					<li>邮箱：<em>（待补充）</em></li>
+					<li>RSS：<a href="/rss.xml">订阅本站</a></li>
+				</ul>
+			</article>
+		</main>
+		<Footer />
+		<style>
+			.prose {
+				max-width: 680px;
+			}
+			.prose h1 {
+				margin-bottom: 1em;
+			}
+		</style>
+	</body>
+</html>

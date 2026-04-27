@@ -1,0 +1,36 @@
+---
+import { SITE_AUTHOR } from '../consts';
+const today = new Date();
+---
+
+<footer>
+	<p>&copy; {today.getFullYear()} {SITE_AUTHOR}</p>
+	<p class="meta">
+		<a href="/rss.xml">RSS 订阅</a>
+		<span class="dot">·</span>
+		由 <a href="https://astro.build" target="_blank" rel="noopener">Astro</a> 驱动
+	</p>
+</footer>
+<style>
+	footer {
+		padding: 3em 1em 4em 1em;
+		background: linear-gradient(var(--gray-gradient)) no-repeat;
+		color: rgb(var(--gray));
+		text-align: center;
+		font-size: 0.9em;
+	}
+	footer p {
+		margin: 0.25em 0;
+	}
+	.meta a {
+		color: rgb(var(--gray));
+		text-decoration: none;
+	}
+	.meta a:hover {
+		color: var(--accent);
+	}
+	.dot {
+		margin: 0 0.5em;
+		color: rgb(var(--gray-light));
+	}
+</style>
