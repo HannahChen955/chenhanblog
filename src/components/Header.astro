@@ -1,5 +1,5 @@
 ---
-import { SITE_TITLE } from '../consts';
+import { SITE_TITLE, SITE_NAME, SITE_TAGLINE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
 ---
 
@@ -7,6 +7,11 @@ import HeaderLink from './HeaderLink.astro';
 	<div class="inner">
 		<a href="/" class="logo" aria-label={SITE_TITLE}>
 			<img src="/logo.svg" alt="HAN" width="36" height="36" />
+			<span class="masthead">
+				<span class="name">{SITE_NAME}</span>
+				<span class="sep"> · </span>
+				<span class="tagline">{SITE_TAGLINE}</span>
+			</span>
 		</a>
 		<nav>
 			<HeaderLink href="/">首页</HeaderLink>
@@ -35,17 +40,39 @@ import HeaderLink from './HeaderLink.astro';
 	.logo {
 		display: inline-flex;
 		align-items: center;
+		gap: 0.7em;
 		text-decoration: none;
-		line-height: 0;
+		line-height: 1.2;
 		transition: opacity 0.15s ease;
 	}
 	.logo:hover {
-		opacity: 0.85;
+		opacity: 0.8;
 	}
 	.logo img {
 		display: block;
 		width: 36px;
 		height: 36px;
+		flex-shrink: 0;
+	}
+	.masthead {
+		display: inline-flex;
+		align-items: baseline;
+		font-size: 0.94em;
+		color: var(--color-text);
+	}
+	.name {
+		font-weight: 600;
+		color: var(--color-text);
+		letter-spacing: -0.005em;
+	}
+	.sep {
+		color: var(--color-text-muted);
+		margin: 0 0.15em;
+	}
+	.tagline {
+		font-style: italic;
+		color: var(--color-text-soft);
+		font-weight: 400;
 	}
 	nav {
 		display: flex;
@@ -69,6 +96,12 @@ import HeaderLink from './HeaderLink.astro';
 		border: none;
 		font-weight: 500;
 	}
+	@media (max-width: 720px) {
+		.tagline,
+		.sep {
+			display: none;
+		}
+	}
 	@media (max-width: 480px) {
 		.inner {
 			padding: 0.9em 1em;
@@ -77,6 +110,9 @@ import HeaderLink from './HeaderLink.astro';
 		.logo img {
 			width: 32px;
 			height: 32px;
+		}
+		.masthead {
+			font-size: 0.9em;
 		}
 		nav {
 			gap: 1.1em;
