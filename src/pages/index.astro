@@ -21,108 +21,161 @@ const recent = posts.slice(0, 8);
 		<Header />
 		<main>
 			<section class="intro">
-				<h1>你好，我是 Hannah</h1>
-				<p>
-					这里是我个人的写作空间，记录想法、感悟，以及一些我觉得值得留下的思考。
-					不追求完整或正确，只希望能持续地写下去。
+				<p class="kicker">写作空间 · Personal Notebook</p>
+				<h1>你好，我是 Hannah。</h1>
+				<p class="lede">
+					这里是我自己的写作角落，记一些想法、感悟，
+					以及那些容易被生活冲走的、值得留下的片段。
+					<br />
+					不追求完整，只希望能持续地写下去。
 				</p>
 			</section>
 
 			<section class="posts">
-				<h2>最近的文章</h2>
-				{recent.length === 0 && <p class="empty">还没有文章，第一篇正在路上。</p>}
-				<ul>
-					{
-						recent.map((post) => (
+				<header class="section-header">
+					<h2>最近</h2>
+					{posts.length > recent.length && (
+						<a href="/blog" class="all-link">全部 →</a>
+					)}
+				</header>
+
+				{recent.length === 0 ? (
+					<p class="empty">第一篇正在路上。</p>
+				) : (
+					<ul>
+						{recent.map((post) => (
 							<li>
-								<a href={`/blog/${post.id}/`}>
-									<span class="title">{post.data.title}</span>
-									<span class="date">
-										<FormattedDate date={post.data.pubDate} />
-									</span>
+								<a href={`/blog/${post.id}/`} class="post-link">
+									<div class="post-head">
+										<span class="title">{post.data.title}</span>
+										<span class="date">
+											<FormattedDate date={post.data.pubDate} />
+										</span>
+									</div>
+									{post.data.description && (
+										<p class="excerpt">{post.data.description}</p>
+									)}
 								</a>
-								{post.data.description && (
-									<p class="excerpt">{post.data.description}</p>
-								)}
 							</li>
-						))
-					}
-				</ul>
-				{
-					posts.length > recent.length && (
-						<p class="more">
-							<a href="/blog">查看全部文章 →</a>
-						</p>
-					)
-				}
+						))}
+					</ul>
+				)}
 			</section>
 		</main>
 		<Footer />
 		<style>
 			.intro {
-				padding: 1em 0 2em 0;
-				border-bottom: 1px solid rgb(var(--gray-light));
-				margin-bottom: 2em;
+				padding: 1em 0 3em 0;
+				margin-bottom: 1em;
+			}
+			.kicker {
+				font-size: 0.78em;
+				color: var(--color-text-muted);
+				letter-spacing: 0.12em;
+				text-transform: uppercase;
+				margin: 0 0 1.6em 0;
+				font-weight: 500;
 			}
 			.intro h1 {
 				font-size: 2em;
-				margin-bottom: 0.5em;
+				margin: 0 0 0.7em 0;
+				line-height: 1.3;
+				letter-spacing: -0.015em;
 			}
-			.intro p {
-				color: rgb(var(--gray));
-				font-size: 1.05em;
+			.lede {
+				font-size: 1.02em;
+				color: var(--color-text-soft);
+				margin: 0;
+				line-height: 1.85;
+				max-width: 36em;
 			}
-			.posts h2 {
-				font-size: 1.3em;
-				margin-bottom: 1.2em;
+
+			.posts {
+				border-top: 1px solid var(--color-border-soft);
+				padding-top: 2.5em;
 			}
+			.section-header {
+				display: flex;
+				align-items: baseline;
+				justify-content: space-between;
+				margin-bottom: 1.8em;
+			}
+			.section-header h2 {
+				font-size: 0.85em;
+				margin: 0;
+				color: var(--color-text-muted);
+				letter-spacing: 0.12em;
+				text-transform: uppercase;
+				font-weight: 500;
+			}
+			.all-link {
+				font-size: 0.85em;
+				color: var(--color-text-muted);
+				text-decoration: none;
+				letter-spacing: 0.05em;
+			}
+			.all-link:hover {
+				color: var(--color-accent);
+			}
+
 			.posts ul {
 				list-style: none;
 				padding: 0;
 				margin: 0;
 			}
 			.posts li {
-				margin-bottom: 1.8em;
+				margin-bottom: 0.4em;
+				padding-bottom: 1.6em;
+				border-bottom: 1px solid var(--color-border-soft);
 			}
-			.posts li a {
+			.posts li:last-child {
+				border-bottom: none;
+			}
+			.post-link {
+				display: block;
+				text-decoration: none;
+				color: var(--color-text);
+				padding: 1em 0;
+			}
+			.post-head {
 				display: flex;
 				justify-content: space-between;
 				align-items: baseline;
-				gap: 1em;
-				text-decoration: none;
-				color: rgb(var(--black));
+				gap: 1.5em;
+				margin-bottom: 0.4em;
 			}
-			.posts .title {
+			.post-link .title {
 				font-weight: 600;
 				font-size: 1.05em;
+				color: var(--color-text);
+				transition: color 0.15s ease;
 			}
-			.posts li a:hover .title {
-				color: var(--accent);
+			.post-link:hover .title {
+				color: var(--color-accent);
 			}
-			.posts .date {
-				color: rgb(var(--gray));
-				font-size: 0.85em;
+			.post-link .date {
+				color: var(--color-text-muted);
+				font-size: 0.82em;
 				white-space: nowrap;
 				font-variant-numeric: tabular-nums;
 			}
-			.posts .excerpt {
-				color: rgb(var(--gray));
-				margin-top: 0.4em;
+			.post-link .excerpt {
+				color: var(--color-text-soft);
+				margin: 0.25em 0 0 0;
 				font-size: 0.95em;
+				line-height: 1.7;
 			}
+
 			.empty {
-				color: rgb(var(--gray));
+				color: var(--color-text-muted);
 				font-style: italic;
 			}
-			.more {
-				margin-top: 2em;
-			}
-			.more a {
-				text-decoration: none;
-				color: var(--accent);
-			}
-			@media (max-width: 480px) {
-				.posts li a {
+
+			@media (max-width: 520px) {
+				.intro h1 {
+					font-size: 1.65em;
+				}
+				.post-head {
 					flex-direction: column;
 					gap: 0.2em;
 				}

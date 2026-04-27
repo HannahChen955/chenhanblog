@@ -4,33 +4,42 @@ const today = new Date();
 ---
 
 <footer>
-	<p>&copy; {today.getFullYear()} {SITE_AUTHOR}</p>
-	<p class="meta">
-		<a href="/rss.xml">RSS 订阅</a>
-		<span class="dot">·</span>
-		由 <a href="https://astro.build" target="_blank" rel="noopener">Astro</a> 驱动
-	</p>
+	<div class="inner">
+		<p class="meta">
+			© {today.getFullYear()} {SITE_AUTHOR}
+			<span class="dot">·</span>
+			<a href="/rss.xml">RSS</a>
+			<span class="dot">·</span>
+			<a href="/about">关于</a>
+		</p>
+	</div>
 </footer>
 <style>
 	footer {
+		border-top: 1px solid var(--color-border-soft);
 		padding: 3em 1em 4em 1em;
-		background: linear-gradient(var(--gray-gradient)) no-repeat;
-		color: rgb(var(--gray));
+		color: var(--color-text-muted);
+		font-size: 0.85em;
 		text-align: center;
-		font-size: 0.9em;
 	}
-	footer p {
-		margin: 0.25em 0;
+	.inner {
+		width: var(--max-width-page);
+		max-width: calc(100% - 2em);
+		margin: 0 auto;
+	}
+	.meta {
+		margin: 0;
+		font-variant-numeric: tabular-nums;
 	}
 	.meta a {
-		color: rgb(var(--gray));
+		color: var(--color-text-muted);
 		text-decoration: none;
 	}
 	.meta a:hover {
-		color: var(--accent);
+		color: var(--color-accent);
 	}
 	.dot {
-		margin: 0 0.5em;
-		color: rgb(var(--gray-light));
+		margin: 0 0.55em;
+		color: var(--color-border);
 	}
 </style>
